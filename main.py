@@ -1,12 +1,18 @@
 from core.sql_core.connect_to_host import DatabaseConnection
+from core.sql_core.sql_creating import CreateTables
 
 def main():
-    pass
+    # Create connection 
+    db = DatabaseConnection()
+    db.connect()
+    print(db.get_connection_status())
 
-db = DatabaseConnection()
+    tables_manager = CreateTables(db)
+    result = tables_manager.create_tables()
 
-db.connect()
-print(db.get_connection_status())
+    db.disconnect()
+    print(db.get_connection_status())
 
-db.disconnect()
-print(db.get_connection_status())
+
+if __name__ == '__main__':
+    main()
