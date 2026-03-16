@@ -20,7 +20,7 @@ async def cmd_help(message: types.Message):
         "/help - Show this help"
     )
 
-async def main():
+async def start_command():
     await dp.start_polling(bot)
 
-asyncio.run(main())
+asyncio.run(start_command())
