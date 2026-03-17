@@ -5,11 +5,13 @@ from core.aiogram_bot.bot_connection import get_bot_and_dispatcher
 
 bot, dp = get_bot_and_dispatcher()
 
+
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     await message.answer(
         """Hi! I am a petyshok bot. Once a day i will choose a gay, good luck!"""
-        )
+    )
+
 
 @dp.message(Command("help"))
 async def cmd_help(message: types.Message):
@@ -20,7 +22,13 @@ async def cmd_help(message: types.Message):
         "/help - Show this help"
     )
 
+
+# Доделать
+kb = types.ReplyKeyboardMarkup()
+
+
 async def start_command():
     await dp.start_polling(bot)
+
 
 asyncio.run(start_command())
