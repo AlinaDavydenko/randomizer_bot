@@ -23,12 +23,7 @@ async def cmd_help(message: types.Message):
     )
 
 
-# Доделать
-kb = types.ReplyKeyboardMarkup()
+# async def start_command():
+#     await dp.start_polling(bot)
 
-
-async def start_command():
-    await dp.start_polling(bot)
-
-
-asyncio.run(start_command())
+# asyncio.run(start_command())

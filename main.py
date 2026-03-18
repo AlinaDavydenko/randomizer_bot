@@ -1,7 +1,7 @@
 import asyncio
 from core.sql_core.connect_to_host import DatabaseConnection
 from core.sql_core.sql_creating import CreateTables
-from core.aiogram_bot.bot_command import start_command
+from core.aiogram_bot.bot_commands import start_command
 
 
 def main():
