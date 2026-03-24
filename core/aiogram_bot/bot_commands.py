@@ -1,19 +1,30 @@
 from aiogram import types
 from aiogram.filters.command import Command
+from core.sql_core.connect_to_host import db
+from core.sql_core.sql_requests import Utils
+from core.pyrogram_core.scan_users import get_all_members
 
-chat_id_storage = {"chat_id": None}
 
 def register_handlers(dp):
     @dp.message(Command("start"))
     async def cmd_start(message: types.Message):
-        await message.answer(
-            """Hi! I am a petyshok bot. Once a day i will choose a gay, good luck!"""
-        )
         if message.chat.type in ("group", "supergroup"):
             chat_id = message.chat.id
+            print(f"[DEBUG] Chat type: {message.chat.type}, chat_id: {chat_id}")
+
+            # Add chat_id into PostgreSQL
+            utils_object = Utils(db)
+            utils_object.insert_chat_id(chat_id)
+
+            users = get_all_members(chat_id)
+
+            print(users)
             print(f"Group Chat ID: {chat_id}")
+
+            await message.answer(
+                """Hi! I am a petyshok bot. Once a day i will choose a gay, good luck!"""
+            )
             await message.answer(f"Chat ID: `{chat_id}`", parse_mode="Markdown")
-            chat_id_storage["chat_id"] = chat_id
         else:
             print(f"Private chat — user ID: {message.chat.id}")
 
