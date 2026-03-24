@@ -1,30 +1,46 @@
 import asyncio
-from core.sql_core.connect_to_host import DatabaseConnection
+from core.sql_core.connect_to_host import db
 from core.sql_core.sql_creating import CreateTables
+from core.sql_core.sql_requests import Utils
 from core.aiogram_bot.bot_connection import get_bot_and_dispatcher
-from core.aiogram_bot.bot_commands import register_handlers, chat_id_storage
+from core.aiogram_bot.bot_commands import register_handlers
 from core.aiogram_bot.bot_keyboard import create_bot_keyboard
-# from core.pyrogram_core.start_session import app, sss
-# from core.scheduler.daily_scan import daily_scan
+from core.pyrogram_core.start_session import create_user_client 
+from core.pyrogram_core.scan_users import get_all_members
 
 
 async def main():
-    """ Shedule """
-    
+    """Shedule"""
+
     """ Connections """
     # Create bot connections
     bot, dp = get_bot_and_dispatcher()
 
     # Create databese connection
-    db = DatabaseConnection()
     db.connect()
 
     print(db.get_connection_status())
 
+    """ Pyrogram client """
+    # Create client for pyrogram 
+    user_client = create_user_client()
+    await user_client.start()
+
     """ SQL core """
-    # Create tables 
+    # Create tables
     tables_manager = CreateTables(db)
-    result = tables_manager.create_tables()
+    utils_object = Utils(db)
+
+    tables_manager.create_tables()
+    utils_object.create_table_chat_id()
+
+    # Get chat_id 
+    chat_id = utils_object.get_chat_id()
+    if chat_id:
+        members = await get_all_members(user_client, chat_id)
+        print(members)
+    else: 
+        print('No chat_id')
 
     """ Bot core """
     # Commands /start and /help
@@ -34,13 +50,9 @@ async def main():
     # Start bot
     await dp.start_polling(bot)
 
-    # Get chat_id
-    chat_id = chat_id_storage
-    print(chat_id)
-
     db.disconnect()
     print(db.get_connection_status())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())
