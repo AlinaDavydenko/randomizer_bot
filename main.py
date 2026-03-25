@@ -36,6 +36,7 @@ async def main():
 
     # Get chat_id 
     chat_id = utils_object.get_chat_id()
+    chat_id = int(str(chat_id)[4:]) * -1 
     if chat_id:
         members = await get_all_members(user_client, chat_id)
         print(members)
