@@ -14,7 +14,8 @@ class ManipulateUsers:
                 cur.execute(
                     """
                     INSERT INTO users (user_id, username)
-                    VALUES (%s, %s);
+                    VALUES (%s, %s)
+                    ON CONFLICT (user_id) DO NOTHING;
                 """,
                     (tg_user_id, tg_user_name),
                 )

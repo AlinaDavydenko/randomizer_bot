@@ -13,7 +13,7 @@ class CreateTables:
                 # Create table users 
                 cur.execute("""
                     CREATE TABLE IF NOT EXISTS users (
-                        user_id INTEGER PRIMARY KEY, 
+                        user_id BIGINT PRIMARY KEY, 
                         username VARCHAR(50) NOT NULL
                             );
                     """)
@@ -21,8 +21,8 @@ class CreateTables:
                 #Create table scores 
                 cur.execute(""" 
                     CREATE TABLE IF NOT EXISTS scores (
-                        id INTEGER PRIMARY KEY,
-                        user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,  
+                        id BIGINT PRIMARY KEY,
+                        user_id BIGINT REFERENCES users(user_id) ON DELETE CASCADE,  
                         point INTEGER NOT NULL CHECK (point > 0),
                         date DATE DEFAULT CURRENT_DATE
                             );
