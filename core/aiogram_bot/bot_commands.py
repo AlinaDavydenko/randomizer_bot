@@ -15,7 +15,10 @@ def register_handlers(dp, user_client):
             utils_object = Utils(db)
             utils_object.insert_chat_id(chat_id)
             await message.answer(
-                """Hi! I am a petyshok bot. Once a day i will choose a gay, good luck!"""
+                """Привет! Я - петушок бот. Один раз в день под восход солнца прокукарекает один петушок, удачи!\n
+                Ps: Важное правило, кто хочет учавствовать в игре, важно написать боту, чтобы он увидел тебя!\n 
+                Просто нажми команду /lets_play или другие команды\n
+                Посмотри /help"""
             )
             await message.answer(f"Chat ID: `{chat_id}`", parse_mode="Markdown")
         else:
@@ -28,5 +31,6 @@ def register_handlers(dp, user_client):
             "Commands:\n"
             "/start - Start the bot\n"
             "/help - Show this help\n"
-            "/keyboard - Show keyboard with extra commands"
+            "/keyboard - Show keyboard with extra commands\n"
+            "/lets_play - I wanna play with you, gays"
         )

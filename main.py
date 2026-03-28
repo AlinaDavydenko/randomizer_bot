@@ -8,11 +8,10 @@ from core.aiogram_bot.bot_keyboard import create_bot_keyboard
 from core.pyrogram_core.start_session import create_user_client
 from core.pyrogram_core.scan_users import get_all_members
 from core.utils.get_from_dictionary import get_params_from_dict
+from core.scheduler.scheduler_jobs import scheduler
 
 
 async def main():
-    """Shedule"""
-
     """ Connections """
     # Create bot connections
     bot, dp = get_bot_and_dispatcher()
@@ -45,12 +44,17 @@ async def main():
     chat_id = utils_object.get_chat_id()
     if chat_id:
         members = await get_all_members(user_client, chat_id)
+
+        # Get all members and insert them into table
         for element in members:
             user_name, user_id = get_params_from_dict(element)
             manipulate_users.insert_user_to_table(user_id, user_name)
 
     else:
         print("No chat_id")
+    
+    """Shedule"""
+    scheduler.start()
 
     # Start bot
     await dp.start_polling(bot)

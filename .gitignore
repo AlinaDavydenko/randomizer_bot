@@ -215,3 +215,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+my_account.session
+my_account.session-journal
