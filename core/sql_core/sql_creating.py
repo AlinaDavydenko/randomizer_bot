@@ -21,7 +21,6 @@ class CreateTables:
                 #Create table scores 
                 cur.execute(""" 
                     CREATE TABLE IF NOT EXISTS scores (
-                        id BIGINT PRIMARY KEY,
                         user_id BIGINT REFERENCES users(user_id) ON DELETE CASCADE,  
                         point INTEGER NOT NULL CHECK (point > 0),
                         date DATE DEFAULT CURRENT_DATE

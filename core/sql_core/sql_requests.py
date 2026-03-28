@@ -32,8 +32,7 @@ class ManipulateUsers:
                 # Getting users
                 cur.execute(
                     """
-                    SELECT username FROM users
-                    ORDER BY username;
+                    SELECT user_id FROM users;
                 """
                 )
 
@@ -101,7 +100,7 @@ class Utils:
             return f"Error {e}"
 
     def get_chat_id(self):
-        """Get last id """
+        """Get last id"""
         try:
             with self.db.conn.cursor() as cur:
                 # Create table users
@@ -114,11 +113,8 @@ class Utils:
                 )
 
                 row = cur.fetchone()
-                return row[0] if row else None 
+                return row[0] if row else None
 
         except Exception as e:
             print(f"[DEBUG] Error inserting chat_id: {e}")
             return f"Error {e}"
-
-
-
