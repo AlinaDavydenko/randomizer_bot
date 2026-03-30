@@ -1,7 +1,13 @@
-users_list = [{'id': 987603602, 'name': 'Alina Davydenko 💖🫧', 'username': 'Alina_Davydenko7'}, {'id': 156330505, 'name': 'Димка ❤️', 'username': 'dmitrymp3'}]
+from core.sql_core.sql_statistics import ScoreStatistics
+from core.sql_core.connect_to_host import db
 
-for element in users_list:
-    user_name = element.get('username')
-    user_id = element.get('id')
+db.connect()
+score_statistics = ScoreStatistics(db)
+all_stat_list = score_statistics.get_all_statistics()
 
-    print(f'{user_name} : {user_id}')
+# print(all_stat_list)
+db.disconnect()
+
+# Get stat
+for element in all_stat_list:
+    print(f'{element[0]}, {element[1]}, {element[2]}')

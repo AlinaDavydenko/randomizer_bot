@@ -44,18 +44,31 @@ class ManipulateUsers:
                 return users_list
 
         except Exception as e:
-            return f"Error {e}"
+            print(f"Error get_all_users: {e}")
+            return [] 
 
 
 class ManipulateScores:
     def __init__(self, db_connection):
         self.db = db_connection
 
-    def insert_csores(self):
-        pass
+    def insert_csores(self, user_id, point, date):
+        try:
+            with self.db.conn.cursor() as cur:
+                # User registration
+                cur.execute(
+                    """
+                    INSERT INTO scores (user_id, point, date)
+                    VALUES (%s, %s, %s);
+                """,
+                    (user_id, point, date),
+                )
 
-    def get_statistics(self):
-        pass
+                self.db.conn.commit()
+
+        except Exception as e:
+            self.db.conn.rollback()
+            return f"Error {e}"
 
 
 class Utils:

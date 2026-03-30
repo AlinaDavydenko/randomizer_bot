@@ -9,9 +9,13 @@ from core.pyrogram_core.start_session import create_user_client
 from core.pyrogram_core.scan_users import get_all_members
 from core.utils.get_from_dictionary import get_params_from_dict
 from core.scheduler.scheduler_jobs import scheduler
+from core.logs_core.logger import setup_logger
 
 
 async def main():
+    """ Logging """
+    # setup_logger()
+
     """ Connections """
     # Create bot connections
     bot, dp = get_bot_and_dispatcher()
@@ -52,7 +56,7 @@ async def main():
 
     else:
         print("No chat_id")
-    
+
     """Shedule"""
     scheduler.start()
 
