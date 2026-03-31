@@ -1,7 +1,7 @@
 import random
 
 
-def get_random_user(users_list: list) -> str:
-    """Get one random user from the list"""
-    random_user = random.choice(users_list)
-    return random_user
+def get_random_user(object_list: list) -> str:
+    """Get one random object from the list"""
+    random_object = random.choice(object_list)
+    return random_object
