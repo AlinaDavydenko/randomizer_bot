@@ -15,14 +15,18 @@ def register_handlers(dp, user_client):
             utils_object = Utils(db)
             utils_object.insert_chat_id(chat_id)
             await message.answer(
-                """Привет! Я - петушок бот. Один раз в день под восход солнца прокукарекает один петушок, удачи!\n
-                Ps: Важное правило, кто хочет учавствовать в игре, важно написать боту, чтобы он увидел тебя!\n 
-                Просто нажми команду /lets_play или другие команды\n
+                """Привет! Я - петушок бот. Один раз в день под восход солнца прокукарекает один петушок, удачи!
+                Ps: Важное правило, кто хочет учавствовать в игре, важно написать боту, чтобы он увидел тебя!
+                Просто нажми команду /lets_play или другие команды
                 Посмотри /help"""
             )
             await message.answer(f"Chat ID: `{chat_id}`", parse_mode="Markdown")
         else:
             print(f"Private chat — user ID: {message.chat.id}")
+
+    @dp.message(Command("lets_play"))
+    async def cmd_lets_play(message: types.Message):
+        await message.answer("""Я увидел тебя!""")
 
     @dp.message(Command("help"))
     async def cmd_help(message: types.Message):
