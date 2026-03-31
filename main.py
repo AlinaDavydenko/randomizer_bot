@@ -5,7 +5,12 @@ from core.sql_core.sql_requests import Utils, ManipulateUsers
 from core.aiogram_bot.bot_connection import get_bot_and_dispatcher
 from core.aiogram_bot.bot_commands import register_handlers
 from core.aiogram_bot.bot_keyboard import create_bot_keyboard
-from core.pyrogram_core.start_session import create_user_client
+from core.aiogram_bot.send_messages import (
+    send_message_random,
+    send_message_year_statistics,
+    send_message_month_statistics
+)
+from core.pyrogram_core.start_session import user_client
 from core.pyrogram_core.scan_users import get_all_members
 from core.utils.get_from_dictionary import get_params_from_dict
 from core.scheduler.scheduler_jobs import scheduler
@@ -13,7 +18,7 @@ from core.logs_core.logger import setup_logger
 
 
 async def main():
-    """ Logging """
+    """Logging"""
     # setup_logger()
 
     """ Connections """
@@ -27,7 +32,6 @@ async def main():
 
     """ Pyrogram client """
     # Create client for pyrogram
-    user_client = create_user_client()
     await user_client.start()
 
     """ SQL core """
@@ -44,20 +48,16 @@ async def main():
     register_handlers(dp, user_client)
     create_bot_keyboard(dp)
 
-    # Get chat_id
-    chat_id = utils_object.get_chat_id()
-    if chat_id:
-        members = await get_all_members(user_client, chat_id)
-
-        # Get all members and insert them into table
-        for element in members:
-            user_name, user_id = get_params_from_dict(element)
-            manipulate_users.insert_user_to_table(user_id, user_name)
-
-    else:
-        print("No chat_id")
-
     """Shedule"""
+    # Scan people
+    scheduler.add_job(get_all_members, "cron", hour=9, minute=0, id="scan_users", args=[user_client])
+    # Send messages
+    scheduler.add_job(send_message_random, "cron", hour=9, minute=10, id="random_user")
+    # Send month statistics 
+    scheduler.add_job(send_message_month_statistics, "cron", day=1, hour=11, minute=0, id='month_statistics')
+    # Send statistics
+    scheduler.add_job(send_message_year_statistics, "cron", month=1, day=1, hour=10, minute=25, id="year_statistics")
+
     scheduler.start()
 
     # Start bot
