@@ -1,5 +1,4 @@
 
-
 services:
   postgres:
     image: postgres:15
@@ -13,6 +12,20 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:                       
+      test: ["CMD-SHELL", "pg_isready -U randomizer -d randomizer_db"]
+      interval: 5s
+      retries: 5
+
+  bot:
+    build: .
+    container_name: randomizer_bot
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy     
+    volumes:
+      - .:/app
 
 volumes:
   postgres_data:
