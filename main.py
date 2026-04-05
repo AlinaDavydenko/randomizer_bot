@@ -19,7 +19,7 @@ from core.logs_core.logger import setup_logger
 
 async def main():
     """Logging"""
-    # setup_logger()
+    setup_logger()
 
     """ Connections """
     # Create bot connections
@@ -38,7 +38,6 @@ async def main():
     # Create tables
     tables_manager = CreateTables(db)
     utils_object = Utils(db)
-    manipulate_users = ManipulateUsers(db)
 
     tables_manager.create_tables()
     utils_object.create_table_chat_id()
