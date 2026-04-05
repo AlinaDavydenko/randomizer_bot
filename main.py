@@ -19,7 +19,7 @@ from core.logs_core.logger import setup_logger
 
 async def main():
     """Logging"""
-    setup_logger()
+    # setup_logger()
 
     """ Connections """
     # Create bot connections
