@@ -6,18 +6,18 @@ class ManipulateUsers:
     def __init__(self, db_connection):
         self.db = db_connection
 
-    def insert_user_to_table(self, tg_user_id, tg_user_name):
+    def insert_user_to_table(self, tg_user_id, tg_group_id):
         """Insert one user into table user"""
         try:
             with self.db.conn.cursor() as cur:
                 # User registration
                 cur.execute(
                     """
-                    INSERT INTO users (user_id, username)
+                    INSERT INTO users (user_id, group_id)
                     VALUES (%s, %s)
-                    ON CONFLICT (user_id) DO NOTHING;
+                    ON CONFLICT (user_id, group_id) DO NOTHING;
                 """,
-                    (tg_user_id, tg_user_name),
+                    (tg_user_id, tg_group_id),
                 )
 
                 self.db.conn.commit()
@@ -25,23 +25,20 @@ class ManipulateUsers:
         except Exception as e:
             return f"Error {e}"
 
-    def get_all_users(self):
+    def get_all_users(self, tg_group_id):
         """Get all users from users table"""
         try:
             with self.db.conn.cursor() as cur:
                 # Getting users
                 cur.execute(
                     """
-                    SELECT user_id FROM users;
-                """
+                    SELECT user_id FROM users
+                    WHERE group_id = %s;
+                """, (tg_group_id,), 
                 )
 
                 rows = cur.fetchall()
-                users_list = []
-                for row in rows:
-                    users_list.append(row)
-
-                return users_list
+                return [row[0] for row in rows]
 
         except Exception as e:
             print(f"Error get_all_users: {e}")
@@ -52,82 +49,21 @@ class ManipulateScores:
     def __init__(self, db_connection):
         self.db = db_connection
 
-    def insert_csores(self, user_id, point, date):
+    def insert_scores(self, user_id, group_id, point, date):
         try:
             with self.db.conn.cursor() as cur:
                 # User registration
                 cur.execute(
                     """
-                    INSERT INTO scores (user_id, point, date)
-                    VALUES (%s, %s, %s);
+                    INSERT INTO scores (user_id, group_id, point, date)
+                    VALUES (%s, %s, %s, %s), 
+                    ON CONFLICT (user_id, group_id, date) DO NOTHING;
                 """,
-                    (user_id, point, date),
+                    (user_id, group_id, point, date),
                 )
 
                 self.db.conn.commit()
 
         except Exception as e:
             self.db.conn.rollback()
-            return f"Error {e}"
-
-
-class Utils:
-    """Some extra requests"""
-
-    def __init__(self, db_connection):
-        self.db = db_connection
-
-    def create_table_chat_id(self):
-        try:
-            with self.db.conn.cursor() as cur:
-                # Create table users
-                cur.execute(
-                    """
-                    CREATE TABLE IF NOT EXISTS chat_id (
-                        chat_id BIGINT PRIMARY KEY
-                            );
-                    """
-                )
-                self.db.conn.commit()
-
-        except Exception as e:
-            return f"Error {e}"
-
-    def insert_chat_id(self, id):
-        try:
-            with self.db.conn.cursor() as cur:
-                # Create table users
-                cur.execute(
-                    """
-                    INSERT INTO chat_id (chat_id)
-                    VALUES (%s)
-                    ON CONFLICT (chat_id) DO NOTHING;
-                    """,
-                    (id,),
-                )
-                self.db.conn.commit()
-                print(f"[DEBUG] Successfully inserted chat_id: {id}")
-
-        except Exception as e:
-            print(f"[DEBUG] Error inserting chat_id: {e}")
-            return f"Error {e}"
-
-    def get_chat_id(self):
-        """Get last id"""
-        try:
-            with self.db.conn.cursor() as cur:
-                # Create table users
-                cur.execute(
-                    """
-                    SELECT chat_id FROM chat_id
-                    ORDER BY chat_id DESC
-                    LIMIT 1;
-                    """
-                )
-
-                row = cur.fetchone()
-                return row[0] if row else None
-
-        except Exception as e:
-            print(f"[DEBUG] Error inserting chat_id: {e}")
             return f"Error {e}"

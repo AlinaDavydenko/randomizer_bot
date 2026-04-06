@@ -12,6 +12,11 @@ def create_bot_keyboard(dp):
         kb = types.ReplyKeyboardMarkup(resize_keyboard=True, keyboard=keyboard_for_bot)
         await message.answer(text='Выбери опции', reply_markup=kb)
 
+    @dp.message(lambda message: message.text == "Присоединиться к игре")
+    async def handle_add_users(message: types.Message):
+        await 
+        pass 
+
     @dp.message(lambda message: message.text == "Статистика за всё время")
     async def handle_statistics(message: types.Message):
         await send_message_all_statistics()

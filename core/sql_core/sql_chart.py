@@ -6,7 +6,7 @@ class ScoreStatisticsChart:
     def __init__(self, db_connection):
         self.db = db_connection
 
-    def get_all_statistics(self):
+    def get_all_statistics(self, group_id):
         """Get all statistics"""
         try:
             with self.db.conn.cursor() as cur:
@@ -14,17 +14,14 @@ class ScoreStatisticsChart:
                 cur.execute(
                     """
                     select user_id, SUM(point) as sum_point, date from scores
+                    WHERE group_id = %s
                     group by date, user_id
                     order by sum_point desc;
-                    """
+                    """, (group_id, ), 
                 )
 
                 rows = cur.fetchall()
-                all_stat_list = []
-                for row in rows:
-                    all_stat_list.append(row)
-
-                return all_stat_list
+                return rows
 
         except Exception as e:
             print(f"Error get_all_users: {e}")
