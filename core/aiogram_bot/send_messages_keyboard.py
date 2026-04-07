@@ -50,7 +50,7 @@ async def send_message_all_users(group_id):
             # Get random object
             random_emojie = get_random(emojie)
 
-            user = await bot.get_chat(element[0])
+            user = await bot.get_chat(element)
 
             message_string = f"{user.username} {random_emojie}\n"
             ready_message += message_string
