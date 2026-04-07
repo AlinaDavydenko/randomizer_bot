@@ -8,7 +8,6 @@ def register_handlers(dp):
     @dp.message(Command("start"))
     async def cmd_start(message: types.Message):
         if message.chat.type in ("group", "supergroup"):
-            chat_id = message.chat.id
 
             await message.answer(
                 "Привет! Я - петушок бот.\nОдин раз в день под восход солнца прокукарекает один петушок, удачи!\n\n"

@@ -31,6 +31,8 @@ scheduler = AsyncIOScheduler()
 # )
 
 
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 scheduler.add_job(send_message_random, "interval", seconds=30, id="random_user")
 
 # scheduler.add_job(

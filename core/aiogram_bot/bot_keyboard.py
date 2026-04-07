@@ -15,9 +15,10 @@ def create_bot_keyboard(dp):
 
     @dp.message(lambda message: message.text == "Статистика за всё время")
     async def handle_statistics(message: types.Message):
-        await send_message_all_statistics()
+        group_id = message.chat.id
+        await send_message_all_statistics(group_id)
 
     @dp.message(lambda message: message.text == "Показать участников")
     async def handle_members(message: types.Message):
-        await send_message_all_users()
-
+        group_id = message.chat.id
+        await send_message_all_users(group_id)
