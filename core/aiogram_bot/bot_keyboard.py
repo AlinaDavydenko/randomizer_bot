@@ -3,7 +3,7 @@ from aiogram import types
 from aiogram.filters.command import Command
 from core.sql_core.connect_to_host import db
 from core.aiogram_bot.list_keyboard import keyboard_for_bot
-from core.aiogram_bot.send_messages import send_message_all_statistics, send_message_all_users
+from core.aiogram_bot.send_messages_keyboard import send_message_all_statistics, send_message_all_users
 
 def create_bot_keyboard(dp):
     """Bot inline keyboard"""
