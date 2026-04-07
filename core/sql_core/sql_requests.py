@@ -34,7 +34,8 @@ class ManipulateUsers:
                     """
                     SELECT user_id FROM users
                     WHERE group_id = %s;
-                """, (tg_group_id,), 
+                """,
+                    (tg_group_id,),
                 )
 
                 rows = cur.fetchall()
@@ -42,7 +43,22 @@ class ManipulateUsers:
 
         except Exception as e:
             print(f"Error get_all_users: {e}")
-            return [] 
+            return []
+
+    def get_all_groups(self):
+        """Get all distinct groups"""
+        try:
+            with self.db.conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT DISTINCT group_id FROM users;
+                    """
+                )
+                rows = cur.fetchall()
+                return [row[0] for row in rows]
+
+        except Exception as e:
+            print(f"Error get_all_groups: {e}")
 
 
 class ManipulateScores:
@@ -56,8 +72,7 @@ class ManipulateScores:
                 cur.execute(
                     """
                     INSERT INTO scores (user_id, group_id, point, date)
-                    VALUES (%s, %s, %s, %s), 
-                    ON CONFLICT (user_id, group_id, date) DO NOTHING;
+                    VALUES (%s, %s, %s, %s);
                 """,
                     (user_id, group_id, point, date),
                 )

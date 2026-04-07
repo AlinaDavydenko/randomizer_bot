@@ -1,6 +1,7 @@
 import asyncio
-from aiogram import Bot, Dispatcher, types
+from aiogram import types
 from aiogram.filters.command import Command
+from core.sql_core.connect_to_host import db
 from core.aiogram_bot.list_keyboard import keyboard_for_bot
 from core.aiogram_bot.send_messages import send_message_all_statistics, send_message_all_users
 
@@ -11,11 +12,6 @@ def create_bot_keyboard(dp):
     async def keyboard(message: types.Message):
         kb = types.ReplyKeyboardMarkup(resize_keyboard=True, keyboard=keyboard_for_bot)
         await message.answer(text='Выбери опции', reply_markup=kb)
-
-    @dp.message(lambda message: message.text == "Присоединиться к игре")
-    async def handle_add_users(message: types.Message):
-        await 
-        pass 
 
     @dp.message(lambda message: message.text == "Статистика за всё время")
     async def handle_statistics(message: types.Message):

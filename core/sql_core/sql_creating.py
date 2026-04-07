@@ -25,8 +25,7 @@ class CreateTables:
                         user_id BIGINT,
                         group_id BIGINT,
                         point INTEGER NOT NULL CHECK (point > 0),
-                        date DATE DEFAULT CURRENT_DATE,
-                        PRIMARY KEY (user_id, group_id, date)
+                        date DATE DEFAULT CURRENT_DATE
                             );
                 """)
 
