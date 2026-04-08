@@ -2,10 +2,10 @@ import asyncio
 from core.sql_core.connect_to_host import db
 from core.sql_core.sql_creating import CreateTables
 from core.aiogram_bot.bot_connection import get_bot_and_dispatcher
-from core.aiogram_bot.bot_commands import register_handlers
-from core.aiogram_bot.bot_keyboard import create_bot_keyboard
 from core.scheduler.scheduler_jobs import scheduler
 from core.logs_core.logger import setup_logger
+from core.aiogram_bot.bot_commands import router
+from core.aiogram_bot.list_commands import set_commands
 
 
 async def main():
@@ -15,6 +15,8 @@ async def main():
     """ Connections """
     # Create bot connections
     bot, dp = get_bot_and_dispatcher()
+
+    dp.include_router(router)
 
     # Create databese connection
     db.connect()
@@ -26,15 +28,11 @@ async def main():
     tables_manager = CreateTables(db)
     tables_manager.create_tables()
 
-    """ Bot core """
-    # Commands /start and /help
-    register_handlers(dp)
-    create_bot_keyboard(dp)
-
     """Shedule"""
     scheduler.start()
 
     # Start bot
+    await set_commands(bot)
     await dp.start_polling(bot)
 
     db.disconnect()
