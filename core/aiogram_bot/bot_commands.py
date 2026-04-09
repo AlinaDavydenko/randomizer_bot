@@ -15,6 +15,7 @@ async def cmd_start(message: types.Message):
         await message.answer(
             "Привет! Я - петушок бот.\n\nОдин раз в день под восход солнца прокукарекает один петушок, удачи!\n\n"
             "Добавься в игру! /register\n\n"
+            "Открыта к предложениям по улучшению бота 😁, тг @Alina_Davydenko7"
         )
     else:
         print(f"Private chat — user ID: {message.chat.id}")
