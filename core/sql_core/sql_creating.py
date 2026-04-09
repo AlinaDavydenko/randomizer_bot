@@ -1,5 +1,6 @@
 import psycopg2
 
+
 class CreateTables:
     """Class for user's score manage"""
 

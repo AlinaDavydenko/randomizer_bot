@@ -19,14 +19,12 @@ services:
       retries: 5
 
   bot:
-    build: .
+    image: alina1234567a/petushok_bot:ver1
     container_name: randomizer_bot
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy     
-    volumes:
-      - .:/app
 
 volumes:
   postgres_data:
